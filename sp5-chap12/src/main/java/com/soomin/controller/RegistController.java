@@ -1,8 +1,11 @@
 package com.soomin.controller;
 
+import javax.validation.Valid;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.Errors;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -26,11 +29,11 @@ public class RegistController {
 	}
 
 	@PostMapping("/step2")
-	public String handeStep2(Model model, @RequestParam(value = "agree", defaultValue = "false") Boolean agree) {
+	public String handeStep2(Model model, @RequestParam(value = "agree", defaultValue = "false") Boolean agree,
+			@ModelAttribute RegisterRequest regisetRequest) {
 		if (!agree) {
 			return "register/step1";
 		}
-		model.addAttribute("registerRequest", new RegisterRequest());
 		return "register/step2";
 	}
 
@@ -40,13 +43,22 @@ public class RegistController {
 	}
 
 	@PostMapping("/step3")
-	public String handleStep3(@ModelAttribute(name = "formData") RegisterRequest regReq) {
+	public String handleStep3(@Valid @ModelAttribute RegisterRequest regReq, Errors errors) {
+		if (errors.hasErrors())
+			return "register/step2";
 		try {
 			memberRegisterSerivce.regist(regReq);
 			return "register/step3";
 		} catch (DuplicateMemberException ex) {
+			errors.rejectValue("email", "duplicate");
 			return "register/step2";
 		}
 	}
+
+//	@InitBinder
+//	protected void initBinder(WebDataBinder binder) {
+//		binder.setValidator(new RegisterRequestValidator());
+////	}	binder.addValidators(new RegisterRequestValidator());
+//	}
 
 }

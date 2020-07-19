@@ -1,10 +1,22 @@
 package com.soomin.service;
 
-public class RegisterRequest {
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 
+import org.hibernate.validator.constraints.Email;
+import org.hibernate.validator.constraints.NotBlank;
+import org.hibernate.validator.constraints.NotEmpty;
+
+public class RegisterRequest {
+	@NotBlank
+	@Email
 	private String email;
+	@Size(min = 6)
+	@NotNull
 	private String password;
+	@NotEmpty
 	private String confirmPassword;
+	@NotEmpty
 	private String name;
 
 	public String getEmail() {
@@ -23,11 +35,11 @@ public class RegisterRequest {
 		this.password = password;
 	}
 
-	public String getComfirmPassword() {
+	public String getConfirmPassword() {
 		return confirmPassword;
 	}
 
-	public void setComfirmPassword(String confirmPassword) {
+	public void setConfirmPassword(String confirmPassword) {
 		this.confirmPassword = confirmPassword;
 	}
 
