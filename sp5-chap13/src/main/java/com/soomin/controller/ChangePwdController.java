@@ -1,4 +1,4 @@
-package com.soomin.service;
+package com.soomin.controller;
 
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
@@ -12,6 +12,12 @@ import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+
+import com.soomin.service.AuthInfo;
+import com.soomin.service.ChangePasswordService;
+import com.soomin.service.ChangePwdCommand;
+import com.soomin.service.ChangePwdCommandValidator;
+import com.soomin.service.WrongPasswordException;
 
 @Controller
 @RequestMapping("/edit/changePassword")
